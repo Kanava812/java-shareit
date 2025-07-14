@@ -55,7 +55,7 @@ public class ItemController {
     @GetMapping("/search")
     public List<ItemDto> findItems(@RequestHeader("X-Sharer-User-Id") Long userId,
                                    @RequestParam String text) {
-        log.debug("Получение пользователем с ID {} списка предметов, содержащих текст: {}." , userId, text);
+        log.debug("Получение пользователем с ID {} списка предметов, содержащих текст: {}.", userId, text);
         return itemService.findItems(userId, text);
     }
 }

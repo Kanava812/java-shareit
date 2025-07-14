@@ -31,7 +31,7 @@ public class UserInMemoryRepository implements UserRepository {
             log.debug("Нет новых данных для обновления почты.");
             userStorage.get(user.getId()).setName(user.getName());
             return userStorage.get(user.getId());
-        }else{
+        } else {
             log.debug("Проверяем уникальность почты.");
             emailValidation(user.getEmail());
         }
