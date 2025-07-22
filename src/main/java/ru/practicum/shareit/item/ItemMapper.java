@@ -3,12 +3,14 @@ package ru.practicum.shareit.item;
 import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemWithBookingDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
+
+import java.time.LocalDateTime;
 
 @UtilityClass
 public class ItemMapper {
-
-    public static Item toItemCreate(CreateItemDto createItemDto) {
+    public Item toItemCreate(CreateItemDto createItemDto) {
         return Item.builder()
                 .name(createItemDto.getName())
                 .description(createItemDto.getDescription())
@@ -16,7 +18,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public static Item toItemUpdate(UpdateItemDto updateItemDto) {
+    public Item toItemUpdate(UpdateItemDto updateItemDto) {
         return Item.builder()
                 .id(updateItemDto.getId())
                 .name(updateItemDto.getName())
@@ -25,12 +27,23 @@ public class ItemMapper {
                 .build();
     }
 
-    public static ItemDto toItemDto(Item item) {
+    public ItemDto toItemDto(Item item) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
+                .build();
+    }
+
+    public ItemWithBookingDto toItemWithBookingDto(Item item, LocalDateTime lastBooking, LocalDateTime nextBooking) {
+        return ItemWithBookingDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable())
+                .lastBooking(lastBooking)
+                .nextBooking(nextBooking)
                 .build();
     }
 }
