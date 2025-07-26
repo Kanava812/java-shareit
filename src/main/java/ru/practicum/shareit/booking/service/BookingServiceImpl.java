@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
@@ -70,6 +72,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookingDto getBooking(Long userId, Long bookingId) {
         log.debug("Проверка прав пользователя с ID {} на просмотр букинга предмета.", userId);
         Booking booking = getBookingById(bookingId);
@@ -81,6 +84,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingDto> getBookingsByUserAndState(Long userId, BookingState state) {
         log.debug("Поиск пользователя с ID {}.", userId);
         User user = userRepository.findById(userId).orElseThrow(
@@ -105,6 +109,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingDto> getBookingsForAllItemsOfOwner(Long ownerId, BookingState state) {
         log.debug("Поиск пользователя с ID {}.", ownerId);
         User user = userRepository.findById(ownerId).orElseThrow(
@@ -128,6 +133,7 @@ public class BookingServiceImpl implements BookingService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     private Booking getBookingById(Long bookingId) {
         return bookingRepository.findById(bookingId).orElseThrow(
                 () -> new EntityNotFoundException("Букинга с ID " + bookingId + " не найдено.")

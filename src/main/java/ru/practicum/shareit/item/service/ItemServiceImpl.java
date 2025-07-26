@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.BookingDates;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
@@ -75,6 +77,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemWithBookingDto getItem(Long userId, Long itemId) {
         log.debug("Поиск пользователя с ID {}.", userId);
         if (!userRepository.existsById(userId)) {
@@ -109,6 +112,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemWithBookingDto> getItems(Long userId) {
         log.debug("Поиск пользователя с ID {}.", userId);
         if (!userRepository.existsById(userId)) {
@@ -151,6 +155,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDto> findItems(Long userId, String text) {
         if (text == null || text.isBlank()) {
             log.debug("Если текст для поиска не задан, результат- пустой список.");
