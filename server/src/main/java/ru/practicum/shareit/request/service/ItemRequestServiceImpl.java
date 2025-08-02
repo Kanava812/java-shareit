@@ -61,7 +61,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
     }
 
     public ItemRequestDtoWithAnswers getItemRequestById(Long id) {
-        log.info("Получение данных о запросе c ID {} вместе с данными об ответах на него",id);
+        log.info("Получение данных о запросе c ID {} вместе с данными об ответах на него", id);
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
         List<Item> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id));
