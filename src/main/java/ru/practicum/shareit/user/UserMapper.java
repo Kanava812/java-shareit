@@ -7,8 +7,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 @UtilityClass
 public class UserMapper {
-
-    public static CreateUserDto toUserDtoCreate(User user) {
+    public CreateUserDto toUserDtoCreate(User user) {
         return CreateUserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -16,14 +15,14 @@ public class UserMapper {
                 .build();
     }
 
-    public static User toUserCreate(CreateUserDto createUserDto) {
+    public User toUserCreate(CreateUserDto createUserDto) {
         return User.builder()
                 .name(createUserDto.getName())
                 .email(createUserDto.getEmail())
                 .build();
     }
 
-    public static UpdateUserDto toUserDtoUpdate(User user) {
+    public UpdateUserDto toUserDtoUpdate(User user) {
         return UpdateUserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -31,15 +30,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static User toUserUpdate(UpdateUserDto updateUserDto) {
-        return User.builder()
-                .id(updateUserDto.getId())
-                .name(updateUserDto.getName())
-                .email(updateUserDto.getEmail())
-                .build();
-    }
-
-    public static UserDto toUserDto(User user) {
+    public UserDto toUserDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())

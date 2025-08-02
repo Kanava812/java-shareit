@@ -51,4 +51,11 @@ public class ExceptionController {
         log.error("Произошла внутренняя ошибка сервера:", e);
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Внутренняя ошибка сервера");
     }
+
+    @ExceptionHandler(AccessNotAllowedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessNotAllowedException(AccessNotAllowedException e) {
+        log.error("Доступ запрещен:", e);
+        return new ErrorResponse(HttpStatus.FORBIDDEN.value(), "Доступ запрещен.");
+    }
 }
