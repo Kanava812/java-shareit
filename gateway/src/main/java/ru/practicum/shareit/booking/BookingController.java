@@ -1,8 +1,6 @@
 package ru.practicum.shareit.booking;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +34,7 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     public ResponseEntity<Object> approvingOfBooking(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
-                                                     @Min(1L) @PathVariable @Positive Long bookingId,
+                                                     @PathVariable @Positive Long bookingId,
                                                      @RequestParam Boolean approved) {
         log.debug("Подтверждение букинга ({}) с ID {} пользователем c ID{}",
                 approved, bookingId, userId);
