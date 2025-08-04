@@ -6,7 +6,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.ItemRepository;
+import ru.practicum.shareit.item.dto.ItemForRequestDto;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.request.RequestMapper;
@@ -15,9 +17,11 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestDtoWithAnswers;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
-
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -50,13 +54,26 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         User user = userRepository.findById(requestorId)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
         List<ItemRequest> list = requestRepository.findAllByRequestorIdOrderByCreatedDesc(requestorId);
-        return list.stream().map(RequestMapper::toItemRequestWithAnswersDto).toList();
+        Map<Long, List<ItemForRequestDto>> itemsByRequestId = itemRepository.findByRequestIdIn(
+                        list.stream().map(ItemRequest::getId).toList()
+                ).stream()
+                .collect(Collectors.groupingBy(
+                        item -> item.getRequest().getId(),
+                        Collectors.mapping(ItemMapper::toItemForRequestDto, Collectors.toList())
+                ));
+        return list.stream() .map(request -> {
+                    ItemRequestDtoWithAnswers dto = RequestMapper.toItemRequestWithAnswersDto(request);
+                    dto.setItems(itemsByRequestId.getOrDefault(request.getId(), Collections.emptyList()));
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
-    public List<ItemRequestDtoWithAnswers> getAllItemRequests() {
+    public List<ItemRequestDtoWithAnswers> getAllItemRequests(Long userId) {
         log.info("Получение списка запросов, созданных другими пользователями.");
-        return requestRepository.findAll(Sort.by(Sort.Direction.DESC, "created"))
-                .stream().map(RequestMapper::toItemRequestWithAnswersDto)
+        return requestRepository.findAllByRequestorIdNot(userId, Sort.by(Sort.Direction.DESC, "created"))
+                .stream()
+                .map(RequestMapper::toItemRequestWithAnswersDto)
                 .toList();
     }
 
@@ -64,8 +81,11 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         log.info("Получение данных о запросе c ID {} вместе с данными об ответах на него", id);
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
-        List<Item> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id));
-        request.setItems(items);
+        List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
+                .map(ItemMapper::toItemForRequestDto)
+                .toList();
+        ItemRequestDtoWithAnswers itemDto = RequestMapper.toItemRequestWithAnswersDto(request);
+        itemDto.setItems(items);
         return RequestMapper.toItemRequestWithAnswersDto(request);
     }
 }

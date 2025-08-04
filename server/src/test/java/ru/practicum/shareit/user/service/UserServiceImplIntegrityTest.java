@@ -32,8 +32,8 @@ class UserServiceImplIntegrityTest {
     @BeforeEach
     void setUp() {
         testUser = userRepository.save(User.builder()
-                .name("Test User")
-                .email("test@email.com")
+                .name("Name")
+                .email("mail@ya.ru")
                 .build());
     }
 
@@ -41,16 +41,16 @@ class UserServiceImplIntegrityTest {
     @Transactional
     void createShouldSaveUserTest() {
         CreateUserDto dto = CreateUserDto.builder()
-                .name("New User")
-                .email("new@email.com")
+                .name("Name2")
+                .email("mail2@ya.ru")
                 .build();
 
         CreateUserDto result = userService.create(dto);
 
         assertThat(result.getId()).isNotNull();
         assertThat(userRepository.findAll()).hasSize(2);
-        assertThat(result.getEmail()).isEqualTo("new@email.com");
-        assertThat(result.getName()).isEqualTo("New User");
+        assertThat(result.getEmail()).isEqualTo("mail2@ya.ru");
+        assertThat(result.getName()).isEqualTo("Name2");
     }
 
     @Test

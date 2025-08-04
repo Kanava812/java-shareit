@@ -20,8 +20,8 @@ public class ItemRequestController {
     private final ItemRequestService requestService;
 
     @GetMapping("/all")
-    public List<ItemRequestDtoWithAnswers> getAllItemRequests() {
-        return requestService.getAllItemRequests();
+    public List<ItemRequestDtoWithAnswers> getAllItemRequests(@RequestHeader("X-Sharer-User-Id") Long userId) {
+        return requestService.getAllItemRequests(userId);
     }
 
     @GetMapping

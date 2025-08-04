@@ -2,12 +2,8 @@ package ru.practicum.shareit.request;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -32,9 +28,5 @@ public class ItemRequest {
 
     @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
-
-    @OneToMany(mappedBy = "request", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<Item> items = new ArrayList<>();
 }
 

@@ -19,8 +19,8 @@ public class ItemRequestController {
     private final ItemRequestClient requestClient;
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getAllItemRequests() {
-        return requestClient.getAllItemRequests();
+    public ResponseEntity<Object> getAllItemRequests(@RequestHeader("X-Sharer-User-Id") @Positive Long userId) {
+        return requestClient.getAllItemRequests(userId);
     }
 
     @GetMapping
