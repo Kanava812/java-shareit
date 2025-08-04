@@ -79,7 +79,7 @@ public class BookingServiceImpl implements BookingService {
         log.debug("Проверка прав пользователя с ID {} на просмотр букинга предмета.", userId);
         Booking booking = getBookingById(bookingId);
         if (!booking.getBooker().getId().equals(userId) && !booking.getItem().getOwner().getId().equals(userId)) {
-            throw new AccessNotAllowedException("Пользователь не является ни владельцем вещи," +
+            throw new AccessNotAllowedException("Пользователь не является ни владельцем вещи, " +
                     "ни автором букинга, поэтому просмотр запрещен.");
         }
         return BookingMapper.toBookingDto(booking);
@@ -89,8 +89,9 @@ public class BookingServiceImpl implements BookingService {
     @Transactional(readOnly = true)
     public List<BookingDto> getBookingsByUserAndState(Long userId, BookingState state) {
         log.debug("Поиск пользователя с ID {}.", userId);
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new EntityNotFoundException("Пользователь не найден"));
+        if (!userRepository.existsById(userId)) {
+                throw  new EntityNotFoundException("Пользователь не найден");
+        }
         log.debug("Список букингов в зависимости от запрошенного состояния: {}", state);
         List<Booking> bookings = switch (state) {
             case BookingState.ALL -> bookingRepository.findAllByBookerIdOrderByStartDesc(userId);
@@ -114,8 +115,9 @@ public class BookingServiceImpl implements BookingService {
     @Transactional(readOnly = true)
     public List<BookingDto> getBookingsForAllItemsOfOwner(Long ownerId, BookingState state) {
         log.debug("Поиск пользователя с ID {}.", ownerId);
-        User user = userRepository.findById(ownerId).orElseThrow(
-                () -> new EntityNotFoundException("Пользователь не найден"));
+        if (!userRepository.existsById(ownerId)) {
+            throw  new EntityNotFoundException("Пользователь не найден");
+        }
         log.debug("Получение список букингов предмета в зависимости от запрошенного состояния: {}", state);
         List<Booking> bookings = switch (state) {
             case BookingState.ALL -> bookingRepository.findAllByItemOwnerIdOrderByStartDesc(ownerId);

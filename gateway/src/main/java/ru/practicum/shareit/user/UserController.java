@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<Object> update(@Min(1L) @PathVariable @Positive Long userId,
+    public ResponseEntity<Object> update(@PathVariable @Positive Long userId,
                                          @Valid @RequestBody UpdateUserDto user) {
         log.debug("Обновление пользователя c ID {}. Новые данные: {}.", userId, user);
         user.setId(userId);
@@ -36,13 +35,13 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Object> getUser(@Min(1L) @PathVariable @Positive Long userId) {
+    public ResponseEntity<Object> getUser(@PathVariable @Positive Long userId) {
         log.debug("Получение пользователя с ID {}.", userId);
         return userClient.getUser(userId);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Object> delete(@Min(1L) @PathVariable @Positive Long userId) {
+    public ResponseEntity<Object> delete(@PathVariable @Positive Long userId) {
         log.debug("Удаление пользователя с ID {}.", userId);
         return userClient.delete(userId);
     }

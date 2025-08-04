@@ -63,8 +63,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto updateItem(Long userId, UpdateItemDto item) {
         log.debug("Поиск пользователя с ID {}, обновляющего предмет.", userId);
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("Пользователь не " +
-                "найден."));
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException("Пользователь не найден");
+        }
         log.debug("Проверка прав пользователя с ID {} на обновление.", userId);
         Item updateItem = itemRepository.findById(item.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Вещь не найдена"));
