@@ -77,7 +77,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
                 .toList();
     }
 
-    public ItemRequestDtoWithAnswers getItemRequestById(Long id) {
+    public ItemRequestDtoWithAnswers getItemRequestById(Long userId, Long id) {
         log.info("Получение данных о запросе c ID {} вместе с данными об ответах на него", id);
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));

@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request;
+package ru.practicum.shareit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.exception.ExceptionHandler;
+import ru.practicum.shareit.request.ItemRequestClient;
+import ru.practicum.shareit.request.ItemRequestController;
 import ru.practicum.shareit.request.dto.CreateItemRequestDto;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -21,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = ItemRequestController.class)
 @Import({ExceptionHandler.class})
-class RequestControllerIntegrityTest {
+class ItemRequestControllerIntegrityTest {
 
     @Autowired
     private ObjectMapper mapper;
@@ -123,14 +125,14 @@ class RequestControllerIntegrityTest {
     @SneakyThrows
     @Test
     void getUserRequestByIdValidTest() {
-        when(requestClient.getItemRequestById(anyLong()))
+        when(requestClient.getItemRequestById(anyLong(),anyLong()))
                 .thenReturn(ResponseEntity.ok().build());
 
         mockMvc.perform(get("/requests/1")
                         .header("X-Sharer-User-Id", 1))
                 .andExpect(status().isOk());
 
-        verify(requestClient).getItemRequestById(1L);
+        verify(requestClient).getItemRequestById(1L, 1L);
     }
 
     @SneakyThrows
@@ -141,6 +143,6 @@ class RequestControllerIntegrityTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").exists());
 
-        verify(requestClient, never()).getItemRequestById(anyLong());
+        verify(requestClient, never()).getItemRequestById(anyLong(),anyLong());
     }
 }

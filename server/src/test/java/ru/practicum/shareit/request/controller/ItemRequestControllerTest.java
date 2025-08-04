@@ -94,18 +94,18 @@ class ItemRequestControllerTest {
         List<ItemRequestDtoWithAnswers> result = itemRequestController.getItemRequestsByRequestor(userId);
 
         assertThat(result).hasSize(1);
-        assertThat(result.get(0).getDescription()).isEqualTo("Text");
+        assertThat(result.getFirst().getDescription()).isEqualTo("Text");
         verify(itemRequestService).getItemRequestsByRequestor(userId);
     }
 
     @Test
     void getUserRequestById_requestExists_requestRetrievedTest() {
         Long requestId = 1L;
-        when(itemRequestService.getItemRequestById(requestId)).thenReturn(itemRequestDtoWithAnswers);
+        when(itemRequestService.getItemRequestById(userId, requestId)).thenReturn(itemRequestDtoWithAnswers);
 
-        ItemRequestDtoWithAnswers result = itemRequestController.getItemRequestById(requestId);
+        ItemRequestDtoWithAnswers result = itemRequestController.getItemRequestById(userId, requestId);
 
         assertThat(result.getId()).isEqualTo(1L);
-        verify(itemRequestService).getItemRequestById(requestId);
+        verify(itemRequestService).getItemRequestById(userId, requestId);
     }
 }
