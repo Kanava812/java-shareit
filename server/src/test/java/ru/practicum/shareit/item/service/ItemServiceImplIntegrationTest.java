@@ -252,14 +252,14 @@ class ItemServiceImplIntegrationTest {
 
     @Test
     void searchItemsTest() {
-        Item Item1 = itemRepository.save(Item.builder()
+        Item item1 = itemRepository.save(Item.builder()
                 .name("AAA")
                 .description("GGG")
                 .available(true)
                 .owner(testUser)
                 .build());
 
-        Item Item2 = itemRepository.save(Item.builder()
+        Item item2 = itemRepository.save(Item.builder()
                 .name("BBB")
                 .description("DDD")
                 .available(true)
