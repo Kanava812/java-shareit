@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemMapper;
@@ -32,6 +34,8 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
     private final ItemRequestRepository requestRepository;
     private final ItemRepository itemRepository;
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public ItemRequestDto addNewItemRequest(Long userId, CreateItemRequestDto requestDto) {
         log.info("Создание нового запроса: '{}' пользователем с ID {}.", requestDto.getDescription(), userId);
 
@@ -48,6 +52,8 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         return RequestMapper.toItemRequestDto(saved);
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<ItemRequestDtoWithAnswers> getItemRequestsByRequestor(Long requestorId) {
         log.info("Получение списка своих запросов вместе с данными об ответах на них пользователем с ID {}.",
                 requestorId);
@@ -69,6 +75,8 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<ItemRequestDtoWithAnswers> getAllItemRequests(Long userId) {
         log.info("Получение списка запросов, созданных другими пользователями.");
         return requestRepository.findAllByRequestorIdNot(userId, Sort.by(Sort.Direction.DESC, "created"))
@@ -77,10 +85,18 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public ItemRequestDtoWithAnswers getItemRequestById(Long userId, Long id) {
         log.info("Получение данных о запросе c ID {} вместе с данными об ответах на него", id);
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException("Пользователь не найден");
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            System.err.println("Прерывание потока!");
+            e.printStackTrace();
         }
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
