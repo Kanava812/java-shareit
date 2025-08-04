@@ -79,7 +79,9 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
 
     public ItemRequestDtoWithAnswers getItemRequestById(Long userId, Long id) {
         log.info("Получение данных о запросе c ID {} вместе с данными об ответах на него", id);
-        ItemRequest request = requestRepository.findById(id)
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException("Пользователь не найден");
+        }ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
         List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
                 .map(ItemMapper::toItemForRequestDto)
