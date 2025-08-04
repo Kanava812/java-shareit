@@ -35,7 +35,7 @@ class RequestControllerIntegrityTest {
     @SneakyThrows
     @Test
     void addItemRequestValidTest() {
-        CreateItemRequestDto requestDto = new CreateItemRequestDto("Need a new item");
+        CreateItemRequestDto requestDto = new CreateItemRequestDto("request");
 
         when(requestClient.addNewItemRequest(anyLong(), any(CreateItemRequestDto.class)))
                 .thenReturn(ResponseEntity.ok().build());
@@ -47,7 +47,7 @@ class RequestControllerIntegrityTest {
                 .andExpect(status().isOk());
 
         verify(requestClient).addNewItemRequest(eq(1L), argThat(dto ->
-                dto.getDescription().equals("Need a new item")
+                dto.getDescription().equals("request")
         ));
     }
 
@@ -110,14 +110,14 @@ class RequestControllerIntegrityTest {
     @SneakyThrows
     @Test
     void getAllRequestsTest() {
-        when(requestClient.getAllItemRequests())
+        when(requestClient.getAllItemRequests(anyLong()))
                 .thenReturn(ResponseEntity.ok().build());
 
         mockMvc.perform(get("/requests/all")
                         .header("X-Sharer-User-Id", 1))
                 .andExpect(status().isOk());
 
-        verify(requestClient).getAllItemRequests();
+        verify(requestClient).getAllItemRequests(1L);
     }
 
     @SneakyThrows

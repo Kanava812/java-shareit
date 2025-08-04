@@ -99,8 +99,8 @@ class ItemControllerIntegrityTest {
     @Test
     void updateItemValidTest() {
         UpdateItemDto updateDto = new UpdateItemDto(null,
-                "Updated name",
-                "Updated description",
+                "Updated",
+                "Updated",
                 false);
 
         when(itemClient.updateItem(anyLong(), anyLong(), any(UpdateItemDto.class)))
@@ -113,8 +113,8 @@ class ItemControllerIntegrityTest {
                 .andExpect(status().isOk());
 
         verify(itemClient).updateItem(eq(1L), eq(1L), argThat(dto ->
-                dto.getName().equals("Updated name") &&
-                        dto.getDescription().equals("Updated description") &&
+                dto.getName().equals("Updated") &&
+                        dto.getDescription().equals("Updated") &&
                         !dto.getAvailable()
         ));
     }
@@ -187,7 +187,7 @@ class ItemControllerIntegrityTest {
     @SneakyThrows
     @Test
     void addCommentValidTest() {
-        CreateCommentDto commentDto = new CreateCommentDto("Great item!");
+        CreateCommentDto commentDto = new CreateCommentDto("text");
 
         when(itemClient.addComment(anyLong(), anyLong(), any(CreateCommentDto.class)))
                 .thenReturn(ResponseEntity.ok().build());
@@ -199,14 +199,14 @@ class ItemControllerIntegrityTest {
                 .andExpect(status().isOk());
 
         verify(itemClient).addComment(eq(1L), eq(1L), argThat(dto ->
-                dto.getText().equals("Great item!")
+                dto.getText().equals("text")
         ));
     }
 
     @SneakyThrows
     @Test
     void addCommentInvalidItemIdTest() {
-        CreateCommentDto validComment = new CreateCommentDto("Valid comment");
+        CreateCommentDto validComment = new CreateCommentDto("comment");
 
         mockMvc.perform(post("/items/0/comment")
                         .header("X-Sharer-User-Id", 1)
