@@ -74,7 +74,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         return requestRepository.findAllByRequestorIdNot(userId, Sort.by(Sort.Direction.DESC, "created"))
                 .stream()
                 .map(RequestMapper::toItemRequestWithAnswersDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public ItemRequestDtoWithAnswers getItemRequestById(Long userId, Long id) {
@@ -86,7 +86,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
         List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
                 .map(ItemMapper::toItemForRequestDto)
-                .toList();
+                .collect(Collectors.toList());
         ItemRequestDtoWithAnswers itemDto = RequestMapper.toItemRequestWithAnswersDto(request);
         itemDto.setItems(items);
         return RequestMapper.toItemRequestWithAnswersDto(request);
