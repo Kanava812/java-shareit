@@ -91,12 +91,6 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException("Пользователь не найден");
         }
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            System.err.println("Прерывание потока!");
-            e.printStackTrace();
-        }
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
         List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
