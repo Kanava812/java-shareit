@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.Item;
@@ -27,7 +28,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ItemRequestServiceImpl implements  ItemRequestService {
 
     private final UserRepository userRepository;
@@ -35,6 +35,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
     private final ItemRepository itemRepository;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public ItemRequestDto addNewItemRequest(Long userId, CreateItemRequestDto requestDto) {
         log.info("Создание нового запроса: '{}' пользователем с ID {}.", requestDto.getDescription(), userId);
 
@@ -90,6 +91,12 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         log.info("Получение данных о запросе c ID {} вместе с данными об ответах на него", id);
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException("Пользователь не найден");
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            System.err.println("Прерывание потока!");
+            e.printStackTrace();
         }
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
