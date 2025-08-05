@@ -32,7 +32,7 @@ public class ItemRequestController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getItemRequestById(
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @PathVariable Long id) {
+            @Positive @PathVariable Long id) {
         return requestClient.getItemRequestById(userId, id);
     }
 

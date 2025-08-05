@@ -21,7 +21,6 @@ public class RequestMapper {
                 .userId(request.getRequestor().getId())
                 .created(request.getCreated())
                 .description(request.getDescription())
-                //.items(request.getItems().stream().map(ItemMapper::toItemForRequestDto).toList())
                 .build();
     }
 }
