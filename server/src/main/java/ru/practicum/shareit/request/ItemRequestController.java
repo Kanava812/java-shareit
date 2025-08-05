@@ -33,7 +33,7 @@ public class ItemRequestController {
     @GetMapping("/{id}")
     public ItemRequestDtoWithAnswers getItemRequestById(@RequestHeader("X-Sharer-User-Id") Long userId,
             @PathVariable Long id) {
-        return requestService.getItemRequestById(id, userId);
+        return requestService.getItemRequestById(userId, id);
     }
 
     @PostMapping
