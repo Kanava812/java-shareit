@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "requests")
 public class ItemRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "description", nullable = false, length = 255)
