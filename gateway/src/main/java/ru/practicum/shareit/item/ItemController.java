@@ -36,25 +36,25 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<Object> getItem(@RequestHeader("X-Sharer-User-Id") @Positive Long userId, @PathVariable @Positive Long itemId) {
+    public ResponseEntity<Object> getItem(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable @Positive Long itemId) {
         log.debug("Получение предмета с ID {} пользователем с ID {}.", itemId, userId);
         return itemClient.getItem(userId, itemId);
     }
 
     @GetMapping
-    public ResponseEntity<Object> getItems(@RequestHeader("X-Sharer-User-Id") @Positive Long userId) {
+    public ResponseEntity<Object> getItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug("Получение списка всех предметов пользователя ID {}.", userId);
         return itemClient.getItems(userId);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> findItems(@RequestHeader("X-Sharer-User-Id") @Positive Long userId, @RequestParam String text) {
+    public ResponseEntity<Object> findItems(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam String text) {
         log.debug("Получение пользователем с ID {} списка предметов, содержащих текст: {}.", userId, text);
         return itemClient.findItems(userId, text);
     }
 
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<Object> addComment(@RequestHeader("X-Sharer-User-Id") @Positive Long userId, @Valid @PathVariable @Positive Long itemId,
+    public ResponseEntity<Object> addComment(@RequestHeader("X-Sharer-User-Id") Long userId, @Valid @PathVariable @Positive Long itemId,
                                              @Valid @RequestBody CreateCommentDto comment) {
         log.debug("Комментарий пользователя с ID {} к предмету c ID {}: {}", userId, itemId, comment);
         return itemClient.addComment(userId, itemId, comment);
