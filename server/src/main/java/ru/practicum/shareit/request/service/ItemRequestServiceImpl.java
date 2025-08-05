@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.Item;
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ItemRequestServiceImpl implements  ItemRequestService {
 
     private final UserRepository userRepository;
@@ -35,7 +35,6 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
     private final ItemRepository itemRepository;
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public ItemRequestDto addNewItemRequest(Long userId, CreateItemRequestDto requestDto) {
         log.info("Создание нового запроса: '{}' пользователем с ID {}.", requestDto.getDescription(), userId);
 
