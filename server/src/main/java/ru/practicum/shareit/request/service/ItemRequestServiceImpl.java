@@ -93,7 +93,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
             throw new EntityNotFoundException("Пользователь не найден");
         }
         try {
-            Thread.sleep(2000);
+            Thread.sleep(80000);
         } catch (InterruptedException e) {
             System.err.println("Прерывание потока!");
             e.printStackTrace();
