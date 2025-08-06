@@ -23,5 +23,6 @@ public class ItemRequestDtoWithAnswers {
     @JsonProperty(value = "created")
     private LocalDateTime created;
 
-    List<ItemForRequestDto> items = new ArrayList<>();
+    @Builder.Default
+    private List<ItemForRequestDto> items = new ArrayList<>();
 }
