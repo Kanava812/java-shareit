@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
+
+import java.util.Collections;
 
 @Slf4j
 @Controller
@@ -50,6 +53,10 @@ public class ItemController {
     @GetMapping("/search")
     public ResponseEntity<Object> findItems(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam String text) {
         log.debug("Получение пользователем с ID {} списка предметов, содержащих текст: {}.", userId, text);
+        if (StringUtils.isBlank(text)) {
+            return ResponseEntity.ok(Collections.emptyList());  // Возвращаем пустую коллекцию, если запрос некорректен
+        }
+
         return itemClient.findItems(userId, text);
     }
 

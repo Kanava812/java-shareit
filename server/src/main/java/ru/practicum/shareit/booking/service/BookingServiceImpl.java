@@ -40,13 +40,7 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationException("Предмет не доступен для букинга.");
         }
         log.debug("Проверка дат начала и окончания букинга.");
-        LocalDateTime now = LocalDateTime.now().minusSeconds(5);
-        if (bookingDto.getStart().equals(bookingDto.getEnd()) ||
-                bookingDto.getStart().isBefore(now) ||
-                bookingDto.getEnd().isBefore(now) ||
-                bookingDto.getEnd().isBefore(bookingDto.getStart())) {
-            throw new ValidationException("Недопустимые даты начала и окончания букинга.");
-        }
+
         Booking booking = BookingMapper.toBookingCreate(bookingDto);
         booking.setBooker(user);
         booking.setItem(item);

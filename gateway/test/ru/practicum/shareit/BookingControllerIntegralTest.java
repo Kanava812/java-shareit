@@ -14,10 +14,8 @@ import ru.practicum.shareit.booking.BookingClient;
 import ru.practicum.shareit.booking.BookingController;
 import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
-import ru.practicum.shareit.exception.ExceptionHandler;
-
+import ru.practicum.shareit.exception.ExceptionController;
 import java.time.LocalDateTime;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -28,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = BookingController.class)
-@Import({ExceptionHandler.class})
+@Import({ExceptionController.class})
 class BookingControllerIntegralTest {
 
     @Autowired

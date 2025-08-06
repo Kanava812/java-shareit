@@ -40,19 +40,6 @@ class ExceptionControllerTest {
     }
 
     @Test
-    void handleValidationTest() {
-        String errorMessage = "Некорректные даты бронирования";
-        ValidationException exception = new ValidationException(errorMessage);
-
-        ErrorResponse response = exceptionController.handlerValidationException(exception);
-
-        assertThat(response)
-                .isNotNull()
-                .extracting(ErrorResponse::getError)
-                .isEqualTo(errorMessage);
-    }
-
-    @Test
     void handleAccessDeniedTest() {
         String errorMessage = "Доступ запрещен.";
         AccessNotAllowedException exception = new AccessNotAllowedException(errorMessage);

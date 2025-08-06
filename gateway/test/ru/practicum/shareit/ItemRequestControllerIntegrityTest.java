@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.exception.ExceptionHandler;
+import ru.practicum.shareit.exception.ExceptionController;
 import ru.practicum.shareit.request.ItemRequestClient;
 import ru.practicum.shareit.request.ItemRequestController;
 import ru.practicum.shareit.request.dto.CreateItemRequestDto;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = ItemRequestController.class)
-@Import({ExceptionHandler.class})
+@Import({ExceptionController.class})
 class ItemRequestControllerIntegrityTest {
 
     @Autowired

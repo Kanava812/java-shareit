@@ -10,12 +10,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.exception.ExceptionHandler;
+import ru.practicum.shareit.exception.ExceptionController;
 import ru.practicum.shareit.user.UserClient;
 import ru.practicum.shareit.user.UserController;
 import ru.practicum.shareit.user.dto.CreateUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -24,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = UserController.class)
-@Import(ExceptionHandler.class)
+@Import(ExceptionController.class)
 class UserControllerIntegrityTest {
 
     @Autowired

@@ -11,6 +11,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
+import ru.practicum.shareit.exception.ValidationException;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,8 +28,12 @@ public class BookingController {
                                            @Valid @RequestBody BookItemRequestDto bookingDto) {
         log.debug("Создание букинга ({}) пользователем с ID {}.", bookingDto,
                 userId);
-        if (!(bookingDto.getStart().isBefore(bookingDto.getEnd()))) {
-            throw new IllegalArgumentException("Задан неправильный период бронирования");
+        LocalDateTime now = LocalDateTime.now().minusSeconds(5);
+        if (bookingDto.getStart().equals(bookingDto.getEnd()) ||
+                bookingDto.getStart().isBefore(now) ||
+                bookingDto.getEnd().isBefore(now) ||
+                bookingDto.getEnd().isBefore(bookingDto.getStart())) {
+            throw new ValidationException("Недопустимые даты начала и окончания букинга.");
         }
 
         return bookingClient.bookItem(userId, bookingDto);

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.exception.ExceptionHandler;
+import ru.practicum.shareit.exception.ExceptionController;
 import ru.practicum.shareit.item.ItemClient;
 import ru.practicum.shareit.item.ItemController;
 import ru.practicum.shareit.item.dto.CreateCommentDto;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = ItemController.class)
-@Import({ExceptionHandler.class})
+@Import({ExceptionController.class})
 class ItemControllerIntegrityTest {
 
     @Autowired
@@ -222,8 +222,8 @@ class ItemControllerIntegrityTest {
 
     @SneakyThrows
     @Test
-    void addCommentEmptyTextTest() {
-        CreateCommentDto emptyComment = new CreateCommentDto("");
+    void addCommentNullTest() {
+        CreateCommentDto emptyComment = new CreateCommentDto(null);
 
         mockMvc.perform(post("/items/1/comment")
                         .header("X-Sharer-User-Id", 1)
