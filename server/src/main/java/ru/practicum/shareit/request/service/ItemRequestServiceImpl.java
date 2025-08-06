@@ -19,6 +19,7 @@ import ru.practicum.shareit.request.dto.ItemRequestDtoWithAnswers;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,10 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
         List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
                 .map(ItemMapper::toItemForRequestDto)
-                .toList();
+                .collect(Collectors.toList());
+        if (items == null || items.isEmpty()) {
+            items = new ArrayList<>();
+        }
         ItemRequestDtoWithAnswers itemDto = RequestMapper.toItemRequestWithAnswersDto(request);
         itemDto.setItems(items);
         return RequestMapper.toItemRequestWithAnswersDto(request);
