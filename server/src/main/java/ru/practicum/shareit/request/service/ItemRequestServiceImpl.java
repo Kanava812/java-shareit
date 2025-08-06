@@ -92,11 +92,13 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         }
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
+
         List<ItemForRequestDto> items = itemRepository.findByRequestId(id).stream()
                 .map(ItemMapper::toItemForRequestDto)
                 .collect(Collectors.toList());
+
         ItemRequestDtoWithAnswers itemDto = RequestMapper.toItemRequestWithAnswersDto(request);
         itemDto.setItems(items);
-        return RequestMapper.toItemRequestWithAnswersDto(request);
+        return itemDto;
     }
 }
