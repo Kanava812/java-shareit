@@ -2,7 +2,6 @@ package ru.practicum.shareit.item;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldNameConstants;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
@@ -14,7 +13,6 @@ import ru.practicum.shareit.user.User;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = {"id", "owner"})
-@FieldNameConstants
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

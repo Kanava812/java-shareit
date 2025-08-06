@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.EntityNotFoundException;
-import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.dto.ItemForRequestDto;
@@ -93,7 +92,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         }
         ItemRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
-        List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
+        List<ItemForRequestDto> items = itemRepository.findByRequestId(id).stream()
                 .map(ItemMapper::toItemForRequestDto)
                 .collect(Collectors.toList());
         ItemRequestDtoWithAnswers itemDto = RequestMapper.toItemRequestWithAnswersDto(request);

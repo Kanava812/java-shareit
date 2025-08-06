@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Sort;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.request.ItemRequest;
@@ -149,7 +148,7 @@ class ItemRepositoryTest {
                 .build());
 
         List<Item> foundItems = itemRepository.findByRequestId(
-                request.getId(), Sort.by(Item.Fields.id)
+                request.getId()
         );
 
         assertThat(foundItems)
@@ -173,7 +172,7 @@ class ItemRepositoryTest {
                 .request(newRequest)
                 .build());
 
-        List<Item> foundItems = itemRepository.findByRequestId(newRequest.getId(), Sort.by(Item.Fields.id));
+        List<Item> foundItems = itemRepository.findByRequestId(newRequest.getId());
 
         assertThat(foundItems)
                 .hasSize(1)
