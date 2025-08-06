@@ -95,7 +95,7 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
                 .orElseThrow(() -> new EntityNotFoundException("Запрос не найден."));
         List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
                 .map(ItemMapper::toItemForRequestDto)
-                .collect(Collectors.toList());
+                .toList();
         ItemRequestDtoWithAnswers itemDto = RequestMapper.toItemRequestWithAnswersDto(request);
         itemDto.setItems(items);
         return RequestMapper.toItemRequestWithAnswersDto(request);

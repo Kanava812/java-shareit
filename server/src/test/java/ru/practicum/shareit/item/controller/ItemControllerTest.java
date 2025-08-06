@@ -91,8 +91,8 @@ class ItemControllerTest {
                 .name("Name")
                 .description("Description")
                 .available(true)
-                .lastBooking(LocalDateTime.now().minusSeconds(86400))
-                .nextBooking(LocalDateTime.now().plusSeconds(86400))
+                .lastBooking(LocalDateTime.now().minusSeconds(6400))
+                .nextBooking(LocalDateTime.now().plusSeconds(6400))
                 .comments(comments)
                 .build();
 
@@ -149,8 +149,8 @@ class ItemControllerTest {
         List<ItemDto> actualItems = itemController.findItems(userId, searchText);
 
         assertThat(actualItems).hasSize(1);
-        assertThat(actualItems.get(0).getName().toLowerCase()).contains(searchText);
-        assertThat(actualItems.get(0).getDescription().toLowerCase()).contains(searchText);
+        assertThat(actualItems.getFirst().getName().toLowerCase()).contains(searchText);
+        assertThat(actualItems.getFirst().getDescription().toLowerCase()).contains(searchText);
         verify(itemService).findItems(userId, searchText);
     }
 

@@ -23,7 +23,7 @@ public class Item {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "description", nullable = false, length = 255)
+    @Column(name = "description", nullable = false)
     private String description;
 
     @Column(name = "is_available", nullable = false)
@@ -34,7 +34,7 @@ public class Item {
     @ToString.Exclude
     private User owner;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     @ToString.Exclude
     private ItemRequest request;
