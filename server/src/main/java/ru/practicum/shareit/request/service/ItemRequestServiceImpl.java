@@ -97,9 +97,6 @@ public class ItemRequestServiceImpl implements  ItemRequestService {
         List<ItemForRequestDto> items = itemRepository.findByRequestId(id, Sort.by(Item.Fields.id)).stream()
                 .map(ItemMapper::toItemForRequestDto)
                 .collect(Collectors.toList());
-        if (items == null || items.isEmpty()) {
-            items = new ArrayList<>();
-        }
         ItemRequestDtoWithAnswers itemDto = RequestMapper.toItemRequestWithAnswersDto(request);
         itemDto.setItems(items);
         return RequestMapper.toItemRequestWithAnswersDto(request);
